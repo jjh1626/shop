@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.ItemMapper">
+    <insert id="save" parameterType="Item" useGeneratedKeys="true" keyProperty="itemId" keyColumn="item_id">
+        insert into item (name, price, stock_quantity, dtype, artist, etc, author, isbn, actor, director)
+        values (#{name},#{price},#{stockQuantity},#{dtype},#{artist},#{etc},#{author},#{isbn},#{actor},#{director})
+    </insert>
+
+    <select id="findOne" resultType="Item">
+        select * from item
+        where item_id = #{itemId}
+    </select>
+
+    <select id="findAll" resultType="Item">
+        select * from item
+    </select>
+
+    <update id="modify" parameterType="Item">
+        update item
+            set
+            name=#{name}
+            ,price=#{price}
+            ,stock_quantity=#{stockQuantity}
+            ,dtype=#{dtype}
+            ,artist=#{artist}
+            ,etc=#{etc}
+            ,author=#{author}
+            ,isbn=#{isbn}
+            ,actor=#{actor}
+            ,director=#{director}
+        where item_id = #{itemId}
+    </update>
+
+    <delete id="remove" parameterType="Item">
+        delete from item
+        where item_id = #{itemId}
+    </delete>
+</mapper>

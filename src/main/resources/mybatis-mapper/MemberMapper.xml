@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.MemberMapper">
+    <insert id="save" parameterType="Member" useGeneratedKeys="true" keyProperty="memberId" keyColumn="member_id">
+        insert into member (name, city, street, zipcode)
+        values (#{name}, #{city}, #{street}, #{zipcode})
+    </insert>
+
+    <select id="findOne" resultType="Member">
+        select * from member
+        where member_id = #{memberId}
+    </select>
+
+    <select id="findAll" resultType="Member">
+        SELECT * FROM MEMBER
+    </select>
+
+    <select id="findByName" resultType="Member">
+        select * from member
+        where name = #{name}
+    </select>
+</mapper>
