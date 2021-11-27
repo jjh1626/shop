@@ -10,4 +10,13 @@ public class Delivery {
     private String street;
     private String zipcode;
     private DeliveryStatus status;
+
+    public static Delivery createDelivery(String city, String street, String zipcode){
+        Delivery delivery = new Delivery();
+        delivery.setCity(city);
+        delivery.setStreet(street);
+        delivery.setZipcode(zipcode);
+        delivery.setStatus(DeliveryStatus.READY);
+        return delivery;
+    }
 }

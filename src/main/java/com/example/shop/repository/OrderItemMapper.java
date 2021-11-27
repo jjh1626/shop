@@ -10,5 +10,5 @@ import java.util.List;
 public interface OrderItemMapper {
     void save(OrderItem orderItem);
     OrderItem findOne(Long orderItemId);
-    List<OrderItem> findAll();
+    List<OrderItem> findByOrderId(Long orderId);
 }

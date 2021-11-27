@@ -36,4 +36,10 @@
         delete from item
         where item_id = #{itemId}
     </delete>
+
+    <update id="modifyStock" parameterType="Item">
+        update item
+        set stock_quantity=#{stockQuantity}
+        where item_id = #{itemId}
+    </update>
 </mapper>

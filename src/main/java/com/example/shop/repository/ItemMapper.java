@@ -12,4 +12,5 @@ public interface ItemMapper {
     List<Item> findAll();
     void modify(Item item);
     void remove(Long itemId);
+    void modifyStock(Item item);
 }

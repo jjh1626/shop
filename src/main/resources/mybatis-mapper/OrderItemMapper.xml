@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.OrderItemMapper">
+    <insert id="save" parameterType="OrderItem" useGeneratedKeys="true" keyProperty="orderItemId" keyColumn="order_item_id">
+        insert into order_item (item_id,order_id,order_price,count)
+        values (#{itemId},#{orderId},#{orderPrice},#{count})
+    </insert>
+
+    <select id="findOne" resultType="OrderItem">
+        select * from order_item
+        where order_item_id = #{orderItemId}
+    </select>
+
+    <select id="findByOrderId" resultType="OrderItem">
+        select * from order_item
+        where order_id = #{orderId}
+    </select>
+</mapper>

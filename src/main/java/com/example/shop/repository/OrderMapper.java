@@ -11,4 +11,5 @@ public interface OrderMapper {
     void save(Order order);
     Order findOne(Long orderId);
     List<Order> findAll(OrderSearch orderSearch);
+    void modifyStatus(Order order);
 }

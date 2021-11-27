@@ -10,4 +10,13 @@ public class OrderItem {
     private Long orderId;
     private int orderPrice;
     private int count;
+
+    public static OrderItem createOrderItem(Long itemId, Long orderId, int orderPrice, int count) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItemId(itemId);
+        orderItem.setOrderId(orderId);
+        orderItem.setOrderPrice(orderPrice);
+        orderItem.setCount(count);
+        return orderItem;
+    }
 }
