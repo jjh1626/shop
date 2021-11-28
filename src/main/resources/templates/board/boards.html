@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+
+<th:block layout:fragment="content">
+    <script>
+    $(document).ready(function(){
+        getBoardList();
+    });
+
+    function getBoardList(){
+        $.ajax({
+            type: 'GET',
+            url: '/getBoardList',
+            data: $("form[name=boardSearch]").serialize(),
+            success: function(result){
+                $("#table > tbody").empty();
+                if(result.length > 0){
+                    result.forEach(function(item){
+                        str="<tr>";
+                        str+="<td>" + item.idx + "</td>";
+                        str+="<td>" + item.writer + "</td>";
+                        str+="<td><a href='/boards/view/" + item.idx + "'>" + item.title + "</td>";
+                        str+="<td>" + item.regDate + "</td>";
+                        str+="<td>" + item.hit + "</td>";
+                        str+="</tr>";
+                        $("#table").append(str);
+                    })
+                }
+            },
+            error: function(result){
+                console.log("error");
+            },
+            complete: function(){
+                console.log("complete");
+            }
+        })
+    }
+    </script>
+    <div class="container">
+        <div>
+            <table id="table" class="table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <form th:object="${boardSearch}" name="boardSearch">
+                <select th:field="*{type}">
+                    <option value="">검색선택</option>
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="writer">작성자</option>
+                </select>
+                <input type="text" th:field="*{keyword}">
+                <input type="button" onclick="getBoardList()" class="btn btn-primary mb-2" value="검색">
+            </form>
+            <button onclick="location.href='/boards/write'" class="btn btn-primary">글쓰기</button>
+        </div>
+    </div>
+</th:block>
+</html>

@@ -8,6 +8,8 @@ drop table if exists member CASCADE;
 drop table if exists order_item CASCADE;
 drop table if exists orders CASCADE;
 
+drop table if exists boards CASCADE;
+
 CREATE TABLE Products
 (
     prod_id     IDENTITY        PRIMARY KEY,
@@ -76,4 +78,14 @@ create table orders (
 	order_date timestamp,
 	status varchar(255),
 	primary key (order_id)
+);
+
+create table boards (
+    idx bigint auto_increment not null,
+    writer varchar(255),
+    title varchar(500),
+    content clob,
+    reg_date date,
+    hit integer default(0),
+    primary key (idx)
 );

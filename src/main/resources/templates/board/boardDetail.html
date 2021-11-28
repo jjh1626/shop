@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+
+<th:block layout:fragment="content">
+    <div class="container">
+        <div  th:object="${board}">
+            <h1 class="mt-4" th:text="*{title}"></h1>
+            <hr>
+            <p th:text="*{content}" />
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <button type="button" onclick="location.href='/boards'" class="btn btn-info">목록</button>
+            <a href="#" th:href="@{/boards/edit/{idx} (idx=${board.idx})}"
+               class="btn btn-success" role="button">수정</a>
+        </div>
+    </div>
+</th:block>
+</html>

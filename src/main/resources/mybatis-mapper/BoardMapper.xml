@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.BoardMapper">
+    <insert id="save" parameterType="Board">
+        insert into boards (writer,title,content,reg_date)
+        values (#{writer},#{title},#{content},CURRENT_DATE())
+    </insert>
+
+    <select id="findOne" resultType="Board">
+        select * from boards
+        where idx = #{idx}
+    </select>
+
+    <select id="findAll" parameterType="BoardSearch" resultType="Board">
+        select * from boards
+        where 1=1
+        <choose>
+            <when test="type != null and type.equals('title')">
+                and title Like concat('%',#{keyword},'%')
+            </when>
+            <when test="type != null and type.equals('content')">
+                and content Like concat('%',#{keyword},'%')
+            </when>
+            <when test="type != null and type.equals('writer')">
+                and writer = #{keyword}
+            </when>
+        </choose>
+    </select>
+
+    <update id="modify" parameterType="Board">
+        update boards
+        set writer=#{writer}
+        ,title=#{title}
+        ,content=#{content}
+        ,hit=#{hit}
+        where idx = #{idx}
+    </update>
+
+    <update id="modifyHit" parameterType="Board">
+        update boards
+        set hit = hit+1
+        where idx = #{idx}
+    </update>
+</mapper>
