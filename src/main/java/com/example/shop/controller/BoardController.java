@@ -11,7 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -35,6 +37,19 @@ public class BoardController {
         List<Board> result = boardService.findAll(boardSearch);
         return result;
     }
+
+    @PostMapping(value = "/getPagingBoardList")
+    @ResponseBody
+    public Map<String, Object> getPagingBoardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
+        boardSearch.setTotal(boardService.getTotal());
+
+        List<Board> list = boardService.findAll(boardSearch);
+        Map<String, Object> map = new HashMap<>();
+        //map.put("total", bSearch.getTotal());
+        map.put("list", list);
+        return map;
+    }
+
 
     @GetMapping(value = "/boards/view/{idx}")
     public String detail(@PathVariable("idx") Long idx, Model model) {

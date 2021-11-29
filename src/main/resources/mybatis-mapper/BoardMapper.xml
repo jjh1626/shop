@@ -42,4 +42,8 @@
         set hit = hit+1
         where idx = #{idx}
     </update>
+
+    <select id="getTotal" resultType="Integer">
+        select count(*) as total from boards
+    </select>
 </mapper>

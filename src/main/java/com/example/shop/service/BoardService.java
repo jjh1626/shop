@@ -38,4 +38,8 @@ public class BoardService {
     public void modifyHit(Board board) {
         boardMapper.modifyHit(board);
     }
+
+    public Integer getTotal() {
+        return boardMapper.getTotal();
+    }
 }
