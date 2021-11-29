@@ -13,7 +13,16 @@ values ('Spring',10000,10,'B',null,null,'강호동','654321',null,null);
 insert into item (name, price, stock_quantity, dtype, artist, etc, author, isbn, actor, director)
 values ('MyBatis',20000,10,'B',null,null,'길동이','1111321',null,null);
 
-insert into boards (writer,title,content,reg_date,hit) values ('김민기', '게시판 제목1 입니다.', '내용1 입니다.', current_date(), 0);
-insert into boards (writer,title,content,reg_date,hit) values ('김민기', '게시판 제목2 입니다.', '내용2 입니다.', current_date(), 0);
-insert into boards (writer,title,content,reg_date,hit) values ('김민기', '게시판 제목3 입니다.', '내용3 입니다.', current_date(), 0);
+insert into boards (writer,title,content,reg_date,hit) values ('정민기', '게시판 제목1 입니다.', '내용1 입니다.', current_date(), 0);
+insert into boards (writer,title,content,reg_date,hit) values ('백민기', '게시판 제목2 입니다.', '내용2 입니다.', current_date(), 0);
+insert into boards (writer,title,content,reg_date,hit) values ('이민기', '게시판 제목3 입니다.', '내용3 입니다.', current_date(), 0);
 insert into boards (writer,title,content,reg_date) values ('김민기', '게시판 제목4 입니다.', '내용4 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('홍길동', '게시판 제목5 입니다.', '내용5 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('길동이', '게시판 제목6 입니다.', '내용6 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('호동이', '게시판 제목7 입니다.', '내용7 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('김민기', '게시판 제목8 입니다.', '내용8 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('홍길동', '게시판 제목9 입니다.', '내용9 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('길동이', '게시판 제목10 입니다.', '내용10 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('호동이', '게시판 제목11 입니다.', '내용11 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('길동이', '게시판 제목12 입니다.', '내용12 입니다.', current_date());
+insert into boards (writer,title,content,reg_date) values ('호동이', '게시판 제목13 입니다.', '내용13 입니다.', current_date());
