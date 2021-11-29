@@ -2,18 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shop.repository.BoardMapper">
-    <insert id="save" parameterType="Board">
-        insert into boards (writer,title,content,reg_date)
-        values (#{writer},#{title},#{content},CURRENT_DATE())
-    </insert>
 
-    <select id="findOne" resultType="Board">
-        select * from boards
-        where idx = #{idx}
-    </select>
-
-    <select id="findAll" parameterType="BoardSearch" resultType="Board">
-        select * from boards
+    <sql id="listWhere">
         where 1=1
         <choose>
             <when test="type != null and type.equals('title')">
@@ -26,6 +16,23 @@
                 and writer = #{keyword}
             </when>
         </choose>
+    </sql>
+
+    <insert id="save" parameterType="Board">
+        insert into boards (writer,title,content,reg_date)
+        values (#{writer},#{title},#{content},CURRENT_DATE())
+    </insert>
+
+    <select id="findOne" resultType="Board">
+        select * from boards
+        where idx = #{idx}
+    </select>
+
+    <select id="findAll" parameterType="BoardSearch" resultType="Board">
+        select * from boards
+        <include refid="listWhere"></include>
+        order by idx desc
+        Limit #{start}, #{end}
     </select>
 
     <update id="modify" parameterType="Board">
@@ -43,7 +50,9 @@
         where idx = #{idx}
     </update>
 
-    <select id="getTotal" resultType="Integer">
-        select count(*) as total from boards
+    <select id="getTotal" parameterType="BoardSearch" resultType="Integer">
+        select count(*) as total
+        from boards
+        <include refid="listWhere"></include>
     </select>
 </mapper>

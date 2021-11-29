@@ -41,11 +41,11 @@ public class BoardController {
     @PostMapping(value = "/getPagingBoardList")
     @ResponseBody
     public Map<String, Object> getPagingBoardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
-        boardSearch.setTotal(boardService.getTotal());
-
+        boardSearch.setTotal(boardService.getTotal(boardSearch));
+        boardSearch.getPaging();
         List<Board> list = boardService.findAll(boardSearch);
         Map<String, Object> map = new HashMap<>();
-        //map.put("total", bSearch.getTotal());
+        map.put("total", boardSearch.getTotal());
         map.put("list", list);
         return map;
     }
@@ -79,7 +79,7 @@ public class BoardController {
             boardService.modify(board);
         }
 
-        return "board/boards";
+        return "redirect:/boards";
     }
 
     @GetMapping(value = "/boards/edit/{idx}")

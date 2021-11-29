@@ -39,7 +39,7 @@ public class BoardService {
         boardMapper.modifyHit(board);
     }
 
-    public Integer getTotal() {
-        return boardMapper.getTotal();
+    public Integer getTotal(BoardSearch boardSearch) {
+        return boardMapper.getTotal(boardSearch);
     }
 }

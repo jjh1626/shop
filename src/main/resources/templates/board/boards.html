@@ -6,7 +6,8 @@
 <th:block layout:fragment="content">
     <script>
     $(document).ready(function(){
-        getBoardList();
+        //getBoardList();
+        fn_selectBoardList();
     });
 
     function getBoardList(){
@@ -38,7 +39,7 @@
         })
     }
 
-    function fn_selectBoardList(pageNo){
+    function fn_selectBoardList(){
         var comAjax = new ComAjax('boardSearch');
         comAjax.setUrl("/getPagingBoardList");
         comAjax.setCallback("fn_selectBoardListCallback");
@@ -48,13 +49,15 @@
 	}
 
     function fn_selectBoardListCallback(data){
-        var total = data.TOTAL;
+        var total = data.total;
+        console.log("total>>"+total);
+        console.log("list>>"+data.list);
         var body = $("table>tbody");
         body.empty();
         if(total == 0){
             var str = "<tr>" +
-                            "<td colspan='4'>조회된 결과가 없습니다.</td>" +
-                        "</tr>";
+                        "<td colspan='5'>조회된 결과가 없습니다.</td>" +
+                      "</tr>";
             body.append(str);
         }
         else{
@@ -68,7 +71,7 @@
 
             var str = "";
             $.each(data.list, function(key, value){
-                str="<tr>";
+                str+="<tr>";
                 str+="<td>" + value.idx + "</td>";
                 str+="<td>" + value.writer + "</td>";
                 str+="<td><a href='/boards/view/" + value.idx + "'>" + value.title + "</td>";
@@ -100,15 +103,15 @@
             <input type="hidden" id="pageIndex" name="pageIndex"/>
         </div>
         <div>
-            <form th:object="${boardSearch}" name="boardSearch">
+            <form th:object="${boardSearch}" name="boardSearch" id="boardSearch" onsubmit="return false">
                 <select th:field="*{type}">
                     <option value="">검색선택</option>
                     <option value="title">제목</option>
                     <option value="content">내용</option>
                     <option value="writer">작성자</option>
                 </select>
-                <input type="text" th:field="*{keyword}">
-                <input type="button" onclick="getBoardList()" class="btn btn-primary mb-2" value="검색">
+                <input type="text" th:field="*{keyword}" onkeypress="javascript:if(event.keyCode==13){fn_selectBoardList()}">
+                <input type="button" onclick="fn_selectBoardList()" class="btn btn-primary mb-2" value="검색">
             </form>
             <button onclick="location.href='/boards/write'" class="btn btn-primary">글쓰기</button>
         </div>

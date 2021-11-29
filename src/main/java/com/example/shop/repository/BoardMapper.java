@@ -13,5 +13,5 @@ public interface BoardMapper {
     List<Board> findAll(BoardSearch boardSearch);
     void modify(Board board);
     void modifyHit(Board board);
-    Integer getTotal();
+    Integer getTotal(BoardSearch boardSearch);
 }
