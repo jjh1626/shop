@@ -89,3 +89,13 @@ create table boards (
     hit integer default(0),
     primary key (idx)
 );
+
+create table files (
+    idx bigint auto_increment not null,
+    board_idx bigint not null,
+    original_file_name varchar(255),
+    stored_file_name varchar(255),
+    file_size bigint,
+    reg_date date,
+    primary key (idx)
+);
