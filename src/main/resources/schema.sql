@@ -97,5 +97,6 @@ create table files (
     stored_file_name varchar(255),
     file_size bigint,
     reg_date date,
+    del_gb char(1) default('N'),
     primary key (idx)
 );
