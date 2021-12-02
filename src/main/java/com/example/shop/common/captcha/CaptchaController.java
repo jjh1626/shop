@@ -25,7 +25,7 @@ public class CaptchaController {
         //디렉토리 구분자 확인 (윈도우 : \ , 리눅스 : /)
         //String dirPath = request.getSession().getServletContext().getRealPath("captchaFile") + File.separator;
         String dirPath = "C:"+File.separator+"captchaFile"+File.separator;
-        log.info(">>>"+dirPath);
+        //log.info(">>>"+dirPath);
 
         File file = new File(dirPath);
         if (!file.exists()) {
@@ -41,7 +41,7 @@ public class CaptchaController {
 
         //기존 이미지 삭제처리 (새로고치기 전 이미지 삭제)
         String fileName = (String)commandMap.get("fileName");
-        log.info("fileName>>>"+fileName);
+        //log.info("fileName>>>"+fileName);
         if(fileName!=null) {
             if(!"".equals(fileName)) {
                 NaverCaptcha.captchaFileRemove(fileName, dirPath);
@@ -67,8 +67,8 @@ public class CaptchaController {
 
         String key = NaverCaptcha.captchaSkey();
         String captchaSoundName = NaverCaptcha.captchaSound(key, dirPath);
-        log.info("key>>>"+key);
-        log.info("captchaSoundName>>>"+captchaSoundName);
+        //log.info("key>>>"+key);
+        //log.info("captchaSoundName>>>"+captchaSoundName);
 
         Map<String, Object> map = new HashMap<>();
         map.put("key", key);
@@ -76,7 +76,7 @@ public class CaptchaController {
 
         //기존 이미지 삭제처리 (새로고치기 전 이미지 삭제)
         String fileName = (String)commandMap.get("fileName");
-        log.info("fileName>>>"+fileName);
+        //log.info("fileName>>>"+fileName);
         if(fileName!=null) {
             if(!"".equals(fileName)) {
                 NaverCaptcha.captchaFileRemove(fileName, dirPath);

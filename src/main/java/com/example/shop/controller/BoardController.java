@@ -1,5 +1,7 @@
 package com.example.shop.controller;
 
+import com.example.shop.common.captcha.NaverCaptcha;
+import com.example.shop.common.util.CommonUtils;
 import com.example.shop.model.Board;
 import com.example.shop.model.BoardSearch;
 import com.example.shop.service.BoardService;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,11 +70,38 @@ public class BoardController {
     }
 
     @PostMapping(value = "/boards/write")
-    public String boardWrite(@Valid Board board, BindingResult result) {
+    public String boardWrite(@Valid Board board, BindingResult result, @RequestParam Map<String,Object> commandMap, Model model) {
+
+        //기존 파일(이미지,음성) 삭제 처리
+        String dirPath = "C:"+ File.separator+"captchaFile"+File.separator;
+        String fileName = (String)commandMap.get("captchaFileName");
+        if(fileName!=null && !"".equals(fileName)) {
+            NaverCaptcha.captchaFileRemove(fileName, dirPath);
+        }
 
         //입력 검증
         if (result.hasErrors()) {
             return "board/boardWrite";
+        }
+
+        //캡차 확인
+        String ccType = (String)commandMap.get("ccType");
+        String key = (String)commandMap.get("key");
+        String nImgText = (String)commandMap.get("nImgText");
+        String nResult = null;
+        if(ccType != null && ccType.equals("S")) {
+            nResult = NaverCaptcha.captchaSkeyResult(key, nImgText);
+        } else {
+            nResult = NaverCaptcha.captchaNkeyResult(key, nImgText);
+        }
+        if(nResult==null) {
+            model.addAttribute("msg","자동등록방지 텍스트가 일치하지 않습니다.");
+            return "board/boardWrite";
+        } else {
+            if(!"true".equals(nResult)) {
+                model.addAttribute("msg","자동등록방지 텍스트가 일치하지 않습니다.");
+                return "board/boardWrite";
+            }
         }
 
         //저장 및 수정

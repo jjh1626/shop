@@ -20,32 +20,28 @@ public class FileUtils {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
-        MultipartFile multipartFile = null;
-        String originalFileName = null;
-        String originalFileExtension = null;
-        String storedFileName = null;
-
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-        Map<String,Object> listMap = null;
-
+        List<Map<String,Object>> list = new ArrayList<>();
         String boardIdx = (String)map.get("idx");
 
         File file = new File(filePath);
-        if (file.exists() == false) {
+        if (!file.exists()) {
             file.mkdirs();
         }
 
         while (iterator.hasNext()) {
-            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
-            if (multipartFile.isEmpty() == false) {
-                originalFileName = multipartFile.getOriginalFilename();
-                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+            MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String originalFileName = multipartFile.getOriginalFilename();
+                String originalFileExtension = "";
+                if(originalFileName != null){
+                    originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                }
+                String storedFileName = CommonUtils.getRandomString() + originalFileExtension;
 
                 file = new File(filePath + storedFileName);
                 multipartFile.transferTo(file);     //파일 저장
 
-                listMap = new HashMap<String,Object>();
+                Map<String,Object> listMap = new HashMap<>();
                 listMap.put("board_idx", boardIdx);
                 listMap.put("original_file_name", originalFileName);
                 listMap.put("stored_file_name", storedFileName);
@@ -64,28 +60,22 @@ public class FileUtils {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
-        MultipartFile multipartFile = null;
-        String originalFileName = null;
-        String originalFileExtension = null;
-        String storedFileName = null;
-
         List<Map<String, Object>> list = new ArrayList<>();
-        Map<String,Object> listMap = null;
-
         String boardIdx = (String) map.get("idx");
-        String requestName = null;
-        String idx = null;
 
         while (iterator.hasNext()) {
-            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
-            if (multipartFile.isEmpty() == false) {
-                originalFileName = multipartFile.getOriginalFilename();
-                originalFileExtension = originalFileName.substring(originalFileName.indexOf("."));
-                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+            MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                String originalFileName = multipartFile.getOriginalFilename();
+                String originalFileExtension = "";
+                if(originalFileName != null){
+                    originalFileExtension = originalFileName.substring(originalFileName.indexOf("."));
+                }
+                String storedFileName = CommonUtils.getRandomString() + originalFileExtension;
 
                 multipartFile.transferTo(new File(filePath + storedFileName));  //파일 저장
 
-                listMap = new HashMap<>();
+                Map<String,Object> listMap = new HashMap<>();
                 listMap.put("is_new", "Y");
                 listMap.put("board_idx", boardIdx);
                 listMap.put("original_file_name", originalFileName);
@@ -93,12 +83,12 @@ public class FileUtils {
                 listMap.put("file_size", multipartFile.getSize());
                 list.add(listMap);
             } else {
-                requestName = multipartFile.getName();
+                String requestName = multipartFile.getName();
                 log.info("multipartFile.getName():"+multipartFile.getName());
-                idx = "IDX_"+requestName.substring(requestName.indexOf("_")+1);
+                String idx = "idx_"+requestName.substring(requestName.indexOf("_")+1);
                 log.info("idx:"+idx);
-                if(map.containsKey(idx) == true && map.get(idx) != null){
-                    listMap = new HashMap<String,Object>();
+                if(map.containsKey(idx) && map.get(idx) != null){
+                    Map<String,Object> listMap = new HashMap<>();
                     listMap.put("is_new", "N");
                     listMap.put("file_idx", map.get(idx));
                     list.add(listMap);

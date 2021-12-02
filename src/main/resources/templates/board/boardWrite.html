@@ -4,7 +4,14 @@
       layout:decorator="layout">
 
 <th:block layout:fragment="content">
-
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var msg = /*[[${msg}]]*/;
+    /*]]*/
+    if(msg!=null && msg!=""){
+        alert(msg);
+    }
+</script>
 <script>
     $(document).ready(function(){
         fn_nCaptcha();
@@ -70,10 +77,10 @@
 </script>
     <div class="container">
         <form action="/boards/write" th:object="${board}" autocomplete="off" method="post">
-            <input type="text" th:field="*{idx}">
-            <input type="text" id="ccType" name="ccType">
-            <input type="text" id="key" name="key">
-            <input type="text" id="captchaFileName" name="captchaFileName">
+            <input type="hidden" th:field="*{idx}">
+            <input type="hidden" id="ccType" name="ccType">
+            <input type="hidden" id="key" name="key">
+            <input type="hidden" id="captchaFileName" name="captchaFileName">
             <div>
                 <div class="form-group">
                     <input type="text" th:field="*{title}" maxlength='30' class="form-control" placeholder="제목을 입력하세요">

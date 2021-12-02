@@ -18,29 +18,29 @@ public class CommonUtils {
     public static void printMap(Map<String,Object> map){
         Iterator<Entry<String,Object>> iterator = map.entrySet().iterator();
         Entry<String,Object> entry = null;
-        log.debug("--------------------printMap--------------------\n");
+        log.info("--------------------printMap--------------------\n");
         while(iterator.hasNext()){
             entry = iterator.next();
-            log.debug("key : "+entry.getKey()+",\tvalue : "+entry.getValue());
+            log.info("key : "+entry.getKey()+",\tvalue : "+entry.getValue());
         }
-        log.debug("");
-        log.debug("------------------------------------------------\n");
+        log.info("");
+        log.info("------------------------------------------------\n");
     }
 
     public static void printList(List<Map<String,Object>> list){
         Iterator<Entry<String,Object>> iterator = null;
         Entry<String,Object> entry = null;
-        log.debug("--------------------printList--------------------\n");
+        log.info("--------------------printList--------------------\n");
         int listSize = list.size();
         for(int i=0; i<listSize; i++){
-            log.debug("list index : "+i);
+            log.info("list index : "+i);
             iterator = list.get(i).entrySet().iterator();
             while(iterator.hasNext()){
                 entry = iterator.next();
-                log.debug("key : "+entry.getKey()+",\tvalue : "+entry.getValue());
+                log.info("key : "+entry.getKey()+",\tvalue : "+entry.getValue());
             }
-            log.debug("\n");
+            log.info("\n");
         }
-        log.debug("------------------------------------------------\n");
+        log.info("------------------------------------------------\n");
     }
 }
