@@ -69,10 +69,12 @@ public class BoardController {
     @PostMapping(value = "/boards/write")
     public String boardWrite(@Valid Board board, BindingResult result) {
 
+        //입력 검증
         if (result.hasErrors()) {
             return "board/boardWrite";
         }
 
+        //저장 및 수정
         if(board.getIdx() == null){
             boardService.save(board);
         } else {
