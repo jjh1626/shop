@@ -15,13 +15,14 @@ public class FileUtils {
 
     public List<Map<String, Object>> parseInsertFileInfo(Map<String, Object> map, HttpServletRequest request) throws Exception {
 
-        String filePath = request.getSession().getServletContext().getRealPath("files") + File.separator;
+        //String filePath = request.getSession().getServletContext().getRealPath("files") + File.separator;
+        String filePath = "C:"+File.separator+"captchaFile"+File.separator;
 
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
         List<Map<String,Object>> list = new ArrayList<>();
-        String boardIdx = (String)map.get("idx");
+        Long boardIdx = (Long)map.get("idx");
 
         File file = new File(filePath);
         if (!file.exists()) {
@@ -55,13 +56,14 @@ public class FileUtils {
 
     public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, HttpServletRequest request) throws Exception {
 
-        String filePath = request.getSession().getServletContext().getRealPath("/") + File.separator;
+        //String filePath = request.getSession().getServletContext().getRealPath("/") + File.separator;
+        String filePath = "C:"+File.separator+"captchaFile"+File.separator;
 
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
         List<Map<String, Object>> list = new ArrayList<>();
-        String boardIdx = (String) map.get("idx");
+        Long boardIdx = (Long)map.get("idx");
 
         while (iterator.hasNext()) {
             MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());

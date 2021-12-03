@@ -5,78 +5,113 @@
 
 <th:block layout:fragment="content">
 <script th:inline="javascript">
-    /*<![CDATA[*/
-    var msg = /*[[${msg}]]*/;
-    /*]]*/
-    if(msg!=null && msg!=""){
-        alert(msg);
-    }
+/*<![CDATA[*/
+var msg = /*[[${msg}]]*/;
+/*]]*/
+if(msg!=null && msg!=""){
+    alert(msg);
+}
 </script>
 <script>
-    $(document).ready(function(){
-        fn_nCaptcha();
+var gfv_count = 1;
+
+$(document).ready(function(){
+    fn_nCaptcha();
+
+    $("#addFile").on("click", function(e){
+        e.preventDefault();
+        fn_addFile();
     });
 
-    function fn_nCaptcha(){
-        var strUrl = "/nCaptchaReq.do";
-        var beforeFile = $("#captchaFileName").val();
-        $("#ccType").val("I");  //타입 이미지
-        $("#bySound").css("display","block");   //음성으로 버튼 보여주기
-		$("#byImage").css("display","none");
-		$("#reImg").css("display","block");     //새로고침 버튼 보여주기
-		$("#strGuide").css("display","none");
+    $("a[name=delete]").on("click", function(e){
+        e.preventDefault();
+        fn_deleteFile($(this));
+    });
+});
 
-		$.ajax({
-		    url: strUrl,
-		    type: "get",
-		    data: {fileName : beforeFile},
-		    success: function(data){
-		        $("#key").val(data.key);
-		        $("#captchaFileName").val(data.captchaFileName);
-		        var filePath = "/upload/";
-		        filePath += data.captchaFileName;
-		        var str = "<img src='"+filePath+"' alt='자동 가입 방지 CAPTCHA'>";
-		        $("#nImgDiv").html(str);
-		    },
-		    error: function(data){
-		        alert("[error]자동입력방지 오류" + data);
-		    }
-		});
-    }
+//파일항목 추가
+function fn_addFile(){
+    var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' name='delete' class='btn'>삭제</a></p>";
+    $("#fileDiv").append(str);
+    $("a[name=delete]").on("click", function(e){
+        e.preventDefault();
+        fn_deleteFile($(this));
+    });
+}
 
-    function fn_sCaptcha(){
-        var strUrl = "/sCaptchaReq.do";
-        var beforeFile = $("#captchaFileName").val();
-        $("#ccType").val("S");  //타입 음성
-		$("#byImage").css("display","block");   //이미지로 버튼 보여주기
-		$("#bySound").css("display","none");
-		$("#reImg").css("display","none");
-		$("#strGuide").css("display","block");  //음성캡차 사용 브라우저 안내
+//파일항목 삭제
+function fn_deleteFile(obj){
+    obj.parent().remove();
+}
 
-		$.ajax({
-		    url: strUrl,
-		    type: "get",
-		    data: {fileName : beforeFile},
-		    success: function(data){
-		        $("#key").val(data.key);
-		        $("#captchaFileName").val(data.captchaFileName);
+//이미지 캡차
+function fn_nCaptcha(){
+    var strUrl = "/nCaptchaReq.do";
+    var beforeFile = $("#captchaFileName").val();
+    $("#ccType").val("I");  //타입 이미지
+    $("#bySound").css("display","block");   //음성으로 버튼 보여주기
+    $("#byImage").css("display","none");
+    $("#reImg").css("display","block");     //새로고침 버튼 보여주기
+    $("#strGuide").css("display","none");
 
-                var strImg = "<img src='/images/img_sound.jpg' width='120' alt='음성 안내'>";
-                $("#nImgDiv").html(strImg);
+    $.ajax({
+        url: strUrl,
+        type: "get",
+        data: {fileName : beforeFile},
+        success: function(data){
+            $("#key").val(data.key);
+            $("#captchaFileName").val(data.captchaFileName);
+            var filePath = "/upload/";
+            filePath += data.captchaFileName;
+            var str = "<img src='"+filePath+"' alt='자동 가입 방지 CAPTCHA'>";
+            $("#nImgDiv").html(str);
+        },
+        error: function(data){
+            alert("[error]자동입력방지 오류" + data);
+        }
+    });
+}
 
-                var filePath = "/upload/";
-                filePath += data.captchaFileName;
-                var strAudio = "<audio autoplay><source src='"+filePath+"' type='audio/wav'></audio>"
-                $("#soundDiv").html(strAudio);
-		    },
-		    error: function(data){
-		        alert("[error]자동입력방지 오류" + data);
-		    }
-		});
-    }
+//음성 캡차
+function fn_sCaptcha(){
+    var strUrl = "/sCaptchaReq.do";
+    var beforeFile = $("#captchaFileName").val();
+    $("#ccType").val("S");  //타입 음성
+    $("#byImage").css("display","block");   //이미지로 버튼 보여주기
+    $("#bySound").css("display","none");
+    $("#reImg").css("display","none");
+    $("#strGuide").css("display","block");  //음성캡차 사용 브라우저 안내
+
+    $.ajax({
+        url: strUrl,
+        type: "get",
+        data: {fileName : beforeFile},
+        success: function(data){
+            $("#key").val(data.key);
+            $("#captchaFileName").val(data.captchaFileName);
+
+            var strImg = "<img src='/images/img_sound.jpg' width='120' alt='음성 안내'>";
+            $("#nImgDiv").html(strImg);
+
+            var filePath = "/upload/";
+            filePath += data.captchaFileName;
+            var strAudio = "<audio autoplay><source src='"+filePath+"' type='audio/wav'></audio>"
+            $("#soundDiv").html(strAudio);
+        },
+        error: function(data){
+            alert("[error]자동입력방지 오류" + data);
+        }
+    });
+}
 </script>
+<style>
+div {
+    width: 100%;
+    margin: 3px;
+}
+</style>
     <div class="container">
-        <form action="/boards/write" th:object="${board}" autocomplete="off" method="post">
+        <form action="/boards/write" th:object="${board}" autocomplete="off" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{idx}">
             <input type="hidden" id="ccType" name="ccType">
             <input type="hidden" id="key" name="key">
@@ -95,8 +130,7 @@
                     <textarea th:field="*{content}" class="form-control" style="height:100%; width:100%;" maxlength='1000'></textarea>
                     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="bg-warning">Incorrect content</p>
                 </div>
-                <div class="form-group">
-                    <div class="nDiv01">
+                <div class="form-group" id="ch1">
                         <div id="nImgDiv"></div>
                         <div id="soundDiv"></div>
                         <div class="nDiv02">
@@ -104,16 +138,20 @@
                             <a href="javascript:fn_sCaptcha();" id="bySound" style="display:none">음성으로 듣기</a>
                             <a href="javascript:fn_nCaptcha();" id="byImage" style="display:none">이미지로 보기</a>
                         </div>
-                    </div>
-                    <div class="nDiv01">
+                </div>
+                <div class="form-group" id="ch2">
                         <div>자동등록 방지를 위해 보안절차를 거치고 있습니다.<br>왼쪽 이미지의 텍스트를 보이는 대로 입력해주세요.</div>
                         <div class="nDiv02"><input type="text" name="nImgText" id="nImgText" style="width:80%"/></div>
                         <div id="strGuide" style="display:none">(<font color="red">음성</font>으로 듣기는 크롬 브라우저를 사용해 주세요)</div>
-                    </div>
+
+                </div>
+                <div class="form-group" id="fileDiv">
+                    <p><input type="file" id="file" name="file_0"><a href="#this" id="delete" name="delete" class="btn">삭제</a></p>
                 </div>
                 <div class="form-group">
                     <button type="button" onclick="location.href='/boards'" class="btn btn-info">목록</button>
                     <input type="submit" id="submitBtn"  class="btn btn-outline-primary mr-2" value="작성">
+                    <a href="#this" class="btn" id="addFile">파일 추가</a>
                 </div>
             </div>
         </form>

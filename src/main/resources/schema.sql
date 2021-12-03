@@ -90,13 +90,12 @@ create table boards (
     primary key (idx)
 );
 
-create table files (
+create table attach (
     idx bigint auto_increment not null,
     board_idx bigint not null,
     original_file_name varchar(255),
     stored_file_name varchar(255),
     file_size bigint,
     reg_date date,
-    del_gb char(1) default('N'),
     primary key (idx)
 );

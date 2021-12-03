@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.util.HashMap;
@@ -70,7 +71,9 @@ public class BoardController {
     }
 
     @PostMapping(value = "/boards/write")
-    public String boardWrite(@Valid Board board, BindingResult result, @RequestParam Map<String,Object> commandMap, Model model) {
+    public String boardWrite(@Valid Board board, BindingResult result
+            , @RequestParam Map<String,Object> commandMap
+            , Model model, HttpServletRequest request) throws Exception {
 
         //기존 파일(이미지,음성) 삭제 처리
         String dirPath = "C:"+ File.separator+"captchaFile"+File.separator;
@@ -106,7 +109,7 @@ public class BoardController {
 
         //저장 및 수정
         if(board.getIdx() == null){
-            boardService.save(board);
+            boardService.save(board,request);
         } else {
             boardService.modify(board);
         }
