@@ -2,6 +2,7 @@ package com.example.shop.controller;
 
 import com.example.shop.common.captcha.NaverCaptcha;
 import com.example.shop.common.util.CommonUtils;
+import com.example.shop.model.Attach;
 import com.example.shop.model.Board;
 import com.example.shop.model.BoardSearch;
 import com.example.shop.service.BoardService;
@@ -54,12 +55,13 @@ public class BoardController {
         return map;
     }
 
-
     @GetMapping(value = "/boards/view/{idx}")
     public String detail(@PathVariable("idx") Long idx, Model model) {
         Board board = boardService.findOne(idx);
         boardService.modifyHit(board);
+        List<Attach> fileList = boardService.findFileList(board.getIdx());
         model.addAttribute("board", board);
+        model.addAttribute("fileList", fileList);
         return "board/boardDetail";
     }
 

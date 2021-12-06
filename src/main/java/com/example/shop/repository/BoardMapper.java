@@ -17,4 +17,6 @@ public interface BoardMapper {
     Integer getTotal(BoardSearch boardSearch);
 
     void saveAttach(Attach attach);
+    List<Attach> findFileList(Long boardIdx);
+    Attach findFileOne(Long idx);
 }

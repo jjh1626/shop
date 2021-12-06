@@ -60,4 +60,16 @@
         insert into attach (board_idx,original_file_name,stored_file_name,file_size,reg_date)
         values (#{boardIdx},#{originalFileName},#{storedFileName},#{fileSize},CURRENT_DATE())
     </insert>
+
+    <select id="findFileList" parameterType="Long" resultType="Attach">
+        select * from attach
+        where board_idx = #{boardIdx}
+        order by reg_date
+    </select>
+
+    <select id="findFileOne" parameterType="Long" resultType="Attach">
+        select * from attach
+        where idx = #{idx}
+    </select>
+
 </mapper>

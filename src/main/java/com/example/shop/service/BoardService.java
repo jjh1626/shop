@@ -62,4 +62,14 @@ public class BoardService {
     public Integer getTotal(BoardSearch boardSearch) {
         return boardMapper.getTotal(boardSearch);
     }
+
+    public List<Attach> findFileList(Long boardIdx) {
+        List<Attach> fileList = boardMapper.findFileList(boardIdx);
+        return fileList;
+    }
+
+    public Attach findFileOne(Long idx) {
+        Attach attach = boardMapper.findFileOne(idx);
+        return attach;
+    }
 }
