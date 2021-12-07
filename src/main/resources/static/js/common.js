@@ -155,3 +155,36 @@ function _movePage(value){
 		eval(gfv_eventName + "(value);");
 	}
 }
+
+//IE 브라우저에서 WAV 파일 실행
+function playWavFileInIE(src){
+	console.log(src);
+	var agent = navigator.userAgent.toLowerCase(); // 브라우져 종류 확인
+	
+	if((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)){ // ie
+		 console.log("익스플로러 브라우져 입니다!");
+		var origPlayer = document.getElementById('currentWavPlayer');
+		if(origPlayer){
+			origPlayer.src = '';
+			origPlayer.outerHtml = '';
+			document.body.removeChild(origPlayer);
+			delete origPlayer;
+		}
+		var newPlayer = document.createElement('bgsound');
+		newPlayer.setAttribute('id', 'currentWavPlayer');
+		newPlayer.setAttribute('src', src);
+		document.body.appendChild(newPlayer);
+		return false;
+	} else { // chrome, firefox, safafi....
+		
+		if (agent.indexOf("safari") != -1) {
+			console.log("사파리 브라우저입니다.");
+		} else if(agent.indexOf("chrome") != -1) {
+			console.log("크롬 브라우저입니다.");
+		} else if(agent.indexOf("firefox") != -1){
+			console.log("파이어 폭스 브라우저입니다.");
+		}
+		var audio = new Audio(src);
+		audio.play();
+	}
+}

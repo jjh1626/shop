@@ -95,8 +95,14 @@ function fn_sCaptcha(){
 
             var filePath = "/upload/";
             filePath += data.captchaFileName;
-            var strAudio = "<audio autoplay><source src='"+filePath+"' type='audio/wav'></audio>"
-            $("#soundDiv").html(strAudio);
+            /* audio 태그를 사용한 처리 */
+            //var strAudio = "<audio autoplay><source src='"+filePath+"' type='audio/wav'></audio>"
+            //$("#soundDiv").html(strAudio);
+            /* 자바스크립트 Audio 를 사용한 처리 */
+            //var audio = new Audio(filePath);
+            //audio.play();
+            /* IE 브라우저 wav 음성파일 사용 가능하도록 함수 추가 */
+            playWavFileInIE(filePath);
         },
         error: function(data){
             alert("[error]자동입력방지 오류" + data);
