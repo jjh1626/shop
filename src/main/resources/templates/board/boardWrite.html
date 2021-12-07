@@ -31,7 +31,7 @@ $(document).ready(function(){
 
 //파일항목 추가
 function fn_addFile(){
-    var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' name='delete' class='btn'>삭제</a></p>";
+    var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' name='delete' class='button'>삭제</a></p>";
     $("#fileDiv").append(str);
     $("a[name=delete]").on("click", function(e){
         e.preventDefault();
@@ -131,33 +131,48 @@ div {
                     <input type="text" th:field="*{writer}" maxlength='10' class="form-control" value="" placeholder="작성자">
                     <p th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}" class="bg-warning">Incorrect writer</p>
                 </div>
-                <br />
                 <div id="content_div">
                     <textarea th:field="*{content}" class="form-control" style="height:100%; width:100%;" maxlength='1000'></textarea>
                     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="bg-warning">Incorrect content</p>
                 </div>
-                <div class="form-group" id="ch1">
-                        <div id="nImgDiv"></div>
-                        <div id="soundDiv"></div>
-                        <div class="nDiv02">
-                            <a href="javascript:fn_nCaptcha();" id="reImg"   style="display:none">새로고침</a>
-                            <a href="javascript:fn_sCaptcha();" id="bySound" style="display:none">음성으로 듣기</a>
-                            <a href="javascript:fn_nCaptcha();" id="byImage" style="display:none">이미지로 보기</a>
+                <div class="card my-4">
+                    <div class="card-body">
+                        <div class="form-group" id="ch1">
+                                <div id="nImgDiv"></div>
+                                <div id="soundDiv"></div>
+                                <div class="nDiv02">
+                                    <a href="javascript:fn_nCaptcha();" id="reImg"   style="display:none">새로고침</a>
+                                    <a href="javascript:fn_sCaptcha();" id="bySound" style="display:none">음성으로 듣기</a>
+                                    <a href="javascript:fn_nCaptcha();" id="byImage" style="display:none">이미지로 보기</a>
+                                </div>
                         </div>
-                </div>
-                <div class="form-group" id="ch2">
-                        <div>자동등록 방지를 위해 보안절차를 거치고 있습니다.<br>왼쪽 이미지의 텍스트를 보이는 대로 입력해주세요.</div>
-                        <div class="nDiv02"><input type="text" name="nImgText" id="nImgText" style="width:80%"/></div>
-                        <div id="strGuide" style="display:none">(<font color="red">음성</font>으로 듣기는 크롬 브라우저를 사용해 주세요)</div>
+                        <div class="form-group" id="ch2">
+                                <div>자동등록 방지를 위해 보안절차를 거치고 있습니다.<br>왼쪽 이미지의 텍스트를 보이는 대로 입력해주세요.</div>
+                                <div class="nDiv02"><input type="text" name="nImgText" id="nImgText" style="width:80%"/></div>
+                                <div id="strGuide" style="display:none">(<font color="red">음성</font>으로 듣기는 크롬 브라우저를 사용해 주세요)</div>
 
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group" id="fileDiv">
-                    <p><input type="file" id="file" name="file_0"><a href="#this" id="delete" name="delete" class="btn">삭제</a></p>
+                <div class="card my-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <ul>
+                                <li th:each="file : ${fileList}">
+                                    <a href="#this" th:href="@{/common/downloadFile/{id} (id=${file.idx})}">
+                                    <span th:text="${file.originalFileName}"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-group" id="fileDiv">
+                            <p><input type="file" id="file" name="file_0"><a href="#this" id="delete" name="delete" class="button">삭제</a></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button type="button" onclick="location.href='/boards'" class="btn btn-info">목록</button>
                     <input type="submit" id="submitBtn"  class="btn btn-outline-primary mr-2" value="작성">
-                    <a href="#this" class="btn" id="addFile">파일 추가</a>
+                    <a href="#this" class="button" id="addFile">파일 추가</a>
                 </div>
             </div>
         </form>

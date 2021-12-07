@@ -9,12 +9,12 @@
             <h1 class="mt-4" th:text="*{title}"></h1>
             <hr>
             <p th:text="*{content}" />
-            <div class="card my-4">
+            <div class="card my-4" th:if="${#lists.size(fileList)>0}">
                 <div class="card-body">
                     <ul>
                         <li th:each="file : ${fileList}">
                             <a href="#this" th:href="@{/common/downloadFile/{id} (id=${file.idx})}">
-                            <p th:text="${file.originalFileName}"></p></a>
+                            <span th:text="${file.originalFileName}"></span></a>
                         </li>
                     </ul>
                 </div>

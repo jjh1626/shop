@@ -113,7 +113,7 @@ public class BoardController {
         if(board.getIdx() == null){
             boardService.save(board,request);
         } else {
-            boardService.modify(board);
+            boardService.modify(board,request);
         }
 
         return "redirect:/boards";
@@ -122,7 +122,9 @@ public class BoardController {
     @GetMapping(value = "/boards/edit/{idx}")
     public String boardEdit(@PathVariable("idx") Long idx, Model model) {
         Board board = boardService.findOne(idx);
+        List<Attach> fileList = boardService.findFileList(board.getIdx());
         model.addAttribute("board", board);
+        model.addAttribute("fileList", fileList);
         return "board/boardWrite";
     }
 }

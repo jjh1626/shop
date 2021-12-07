@@ -50,8 +50,23 @@ public class BoardService {
     }
 
     @Transactional
-    public void modify(Board board) {
+    public void modify(Board board, HttpServletRequest request) throws Exception {
+        //게시물 수정
         boardMapper.modify(board);
+
+        //첨부파일 처리
+        Map<String,Object> map = new HashMap<>();
+        map.put("idx", board.getIdx());
+        List<Map<String,Object>> files = fileUtils.parseInsertFileInfo(map, request);   //파일 저장
+        for (Map<String, Object> file : files) {
+            Attach attach = new Attach();
+            attach.setBoardIdx((Long)file.get("board_idx"));
+            attach.setOriginalFileName((String)file.get("original_file_name"));
+            attach.setStoredFileName((String)file.get("stored_file_name"));
+            attach.setFileSize((Long)file.get("file_size"));
+            boardMapper.saveAttach(attach);     //DB 저장
+        }
+
     }
 
     @Transactional
