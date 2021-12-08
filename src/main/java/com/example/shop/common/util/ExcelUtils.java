@@ -2,24 +2,26 @@ package com.example.shop.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
 public class ExcelUtils {
 
+    /**
+     * 엑셀파일 생성
+     */
     public XSSFWorkbook createExcel(List<String> HeaderList, List<Map<String,Object>> bodyList, String sheetName){
         //워크북
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -64,6 +66,85 @@ public class ExcelUtils {
         return workbook;
     }
 
+    /**
+     * 업로드한 엑셀 파일 읽기
+     */
+    public List<Map<String, Object>> readDataExcel(MultipartFile excelFile, String[] headerInfo) {
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        XSSFWorkbook workbook = null;
+        try {
+            OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
+            //워크북
+            workbook = new XSSFWorkbook(opcPackage);
+            //시트
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> iterator = sheet.iterator();
+            
+            Row row = null;
+            Cell cell = null;
+            while (iterator.hasNext()) {
+                row = iterator.next();
+
+                //셀(Cell) 처리
+                int cells = row.getPhysicalNumberOfCells(); //셀의 개수
+                log.info(">>>cells="+cells);
+                Map<String, Object> data = new HashMap<>();
+                for (int cellIndex = 0; cellIndex < cells; cellIndex++) {
+                    cell = row.getCell(cellIndex);
+                    if (cell == null) {
+                        continue;
+                    } else {
+                        String value = getCellValueToString(cell);
+                        data.put(headerInfo[cellIndex],value);
+                    }
+                }
+                CommonUtils.printMap(data);
+                list.add(data);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (workbook != null) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    private String getCellValueToString(Cell cell) {
+        String value = "";
+        CellType ct = cell.getCellTypeEnum();
+        if (ct != null) {
+            switch (cell.getCellTypeEnum()) {
+            case FORMULA:
+                value = cell.getCellFormula();
+                break;
+            case NUMERIC:
+                value = cell.getNumericCellValue() + "";
+                break;
+            case STRING:
+                value = cell.getStringCellValue() + "";
+                break;
+            case BOOLEAN:
+                value = cell.getBooleanCellValue() + "";
+                break;
+            case ERROR:
+                value = cell.getErrorCellValue() + "";
+                break;
+            }
+        }
+        return value;
+    }
+
+    /**
+     * 엑셀 파일 스타일 생성
+     */
     private CellStyle getCellStyle(CellStyle cellStyle, Boolean isHeader) {
         
         //배경색
@@ -85,7 +166,7 @@ public class ExcelUtils {
         return cellStyle;
     }
 
-    /*
+    /**
      * 브라우저에 따른 파일명 인코딩
      */
     public static String getFileName(HttpServletRequest request){

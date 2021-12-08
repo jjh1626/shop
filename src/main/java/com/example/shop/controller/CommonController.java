@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.apache.commons.io.FileUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -93,5 +93,38 @@ public class CommonController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @PostMapping(value = "/common/uploadExcel")
+    public String uploadExcel(MultipartHttpServletRequest request) {
+
+        //업로드 엑셀파일
+        MultipartFile file = null;
+        Iterator<String> iterator = request.getFileNames();
+        if (iterator.hasNext()) {
+            String fileName = iterator.next();
+            file = request.getFile(fileName);
+        }
+
+        //엑셀 헤더 정보
+        String[] headerInfo = {"name","city","street","zipcode"};
+
+        ExcelUtils excelUtils = new ExcelUtils();
+        List<Map<String, Object>> list = excelUtils.readDataExcel(file, headerInfo);
+
+        //CommonUtils.printList(list);
+        
+        //엑셀 회원 데이터 DB 등록
+        for (Map<String, Object> map : list) {
+            Member member = Member.createMember(
+                    String.valueOf(map.get("name"))
+                    , String.valueOf(map.get("city"))
+                    , String.valueOf(map.get("street"))
+                    , String.valueOf(map.get("zipcode")));
+            memberService.join(member);
+        }
+
+        //리스트로 이동
+        return "redirect:/members";
     }
 }

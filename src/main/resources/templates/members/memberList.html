@@ -28,5 +28,11 @@
     <div>
         <a href="#" th:href="@{/common/downloadExcel}" class="button">엑셀 다운로드</a>
     </div>
+    <div>
+        <form id="frm" name="frm" method="post" action="/common/uploadExcel" enctype="multipart/form-data">
+            <input type="file" id="excelFile" name="excelFile"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 </th:block>
 </html>
