@@ -85,7 +85,10 @@ public class ExcelUtils {
             Cell cell = null;
             while (iterator.hasNext()) {
                 row = iterator.next();
-
+                log.info(">>>rowNum="+ row.getRowNum());
+                if(row.getRowNum() < 1){    //첫번째 row 제외
+                    continue;
+                }
                 //셀(Cell) 처리
                 int cells = row.getPhysicalNumberOfCells(); //셀의 개수
                 log.info(">>>cells="+cells);

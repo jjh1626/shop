@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
@@ -107,6 +108,33 @@ public class BoardController {
                 model.addAttribute("msg","자동등록방지 텍스트가 일치하지 않습니다.");
                 return "board/boardWrite";
             }
+        }
+
+        //저장 및 수정
+        if(board.getIdx() == null){
+            boardService.save(board,request);
+        } else {
+            boardService.modify(board,request);
+        }
+
+        return "redirect:/boards";
+    }
+
+    @GetMapping(value = "/boards/editWrite")
+    public String editBoardWriteFrom(Model model) {
+        Board board = new Board();
+        model.addAttribute("board", board);
+        return "board/editBoardWrite";
+    }
+
+    @PostMapping(value = "/boards/editWrite")
+    public String editBoardWrite(@Valid Board board, BindingResult result
+            , @RequestParam Map<String,Object> commandMap
+            , HttpServletRequest request) throws Exception {
+
+        //입력 검증
+        if (result.hasErrors()) {
+            return "board/editBoardWrite";
         }
 
         //저장 및 수정

@@ -8,7 +8,7 @@
         <div th:object="${board}">
             <h1 class="mt-4" th:text="*{title}"></h1>
             <hr>
-            <p th:text="*{content}" />
+            <p th:utext="*{content}" />
             <div class="card my-4" th:if="${#lists.size(fileList)>0}">
                 <div class="card-body">
                     <ul>

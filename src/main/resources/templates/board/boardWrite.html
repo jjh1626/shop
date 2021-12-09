@@ -109,6 +109,14 @@ function fn_sCaptcha(){
         }
     });
 }
+
+function fn_writeCheck(){
+    var frm = document.frm;
+    if(frm.title.value == ''){
+        alert('제목을 입력해 주세요');
+        return false;
+    }
+}
 </script>
 <style>
 div {
@@ -117,7 +125,7 @@ div {
 }
 </style>
     <div class="container">
-        <form action="/boards/write" th:object="${board}" autocomplete="off" method="post" enctype="multipart/form-data">
+        <form name="frm" onsubmit="return fn_writeCheck()" action="/boards/write" th:object="${board}" autocomplete="off" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{idx}">
             <input type="hidden" id="ccType" name="ccType">
             <input type="hidden" id="key" name="key">
@@ -135,6 +143,7 @@ div {
                     <textarea th:field="*{content}" class="form-control" style="height:100%; width:100%;" maxlength='1000'></textarea>
                     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="bg-warning">Incorrect content</p>
                 </div>
+                <!-- 네이버 캡차(이미지,음성) -->
                 <div class="card my-4">
                     <div class="card-body">
                         <div class="form-group" id="ch1">
@@ -154,6 +163,7 @@ div {
                         </div>
                     </div>
                 </div>
+                <!-- 파일 첨부 -->
                 <div class="card my-4">
                     <div class="card-body">
                         <div class="form-group">
@@ -171,7 +181,7 @@ div {
                 </div>
                 <div class="form-group">
                     <button type="button" onclick="location.href='/boards'" class="btn btn-info">목록</button>
-                    <input type="submit" id="submitBtn"  class="btn btn-outline-primary mr-2" value="작성">
+                    <input type="submit" id="submitBtn" class="btn btn-outline-primary mr-2" value="작성">
                     <a href="#this" class="button" id="addFile">파일 추가</a>
                 </div>
             </div>
