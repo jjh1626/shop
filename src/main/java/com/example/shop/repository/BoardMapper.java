@@ -15,6 +15,7 @@ public interface BoardMapper {
     void modify(Board board);
     void modifyHit(Board board);
     Integer getTotal(BoardSearch boardSearch);
+    void deleteOne(Long idx);
 
     void saveAttach(Attach attach);
     List<Attach> findFileList(Long boardIdx);

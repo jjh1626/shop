@@ -7,9 +7,60 @@
     <script>
     $(document).ready(function(){
         //getBoardList();
-        fn_selectBoardList();
+        fn_selectBoardList();   //페이징 게시판 리스트 호출
+
+        //전체선택 및 해제
+        $("#checkAll").on("click",function(){
+            var isCheckAll = $("#checkAll").prop("checked");
+            if(isCheckAll){
+                $("input[name='checkBd']").each(function(){
+                    $(this).prop("checked", true);
+                });
+            } else {
+                $("input[name='checkBd']").each(function(){
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+
+        //삭제버튼 클릭
+        $("#btnDelete").on("click",function(){
+            if(!confirm("삭제 하시겠습니까?")){
+                return false;
+            } else {
+                //삭제처리
+                var checkCnt = $("input[name='checkBd']:checked").length;
+                if(checkCnt == 0) {
+                    alert("선택된 값이 없습니다.");
+                    return false;
+                }
+                var arr = new Array();
+                $("input[name='checkBd']:checked").each(function(){
+                    arr.push($(this).val());
+                });
+                fn_addElement('commonForm','arrCheck',arr);
+                $.ajax({
+                    type: 'POST',
+                    url: '/boardDeletePro',
+                    data: $("form[name='commonForm']").serialize(),
+                    success: function(data){
+                        if(data.result == "success"){
+                            alert('삭제 되었습니다.');
+                            location.reload(true);
+                        } else {
+                            alert('삭제에 실패하였습니다.');
+                        }
+                    },
+                    error: function(){
+                        alert('서버 통신 오류.');
+                        console.log("error");
+                    }
+                });
+            }
+        });
     });
 
+    //일반 게시판 리스트
     function getBoardList(){
         $.ajax({
             type: 'GET',
@@ -39,15 +90,17 @@
         })
     }
 
+    //페이징이 포함된 게시판 리스트
     function fn_selectBoardList(){
         var comAjax = new ComAjax('boardSearch');
         comAjax.setUrl("/getPagingBoardList");
-        comAjax.setCallback("fn_selectBoardListCallback");
+        comAjax.setCallback("fn_selectBoardListCallback");      //콜백함수 지정
         comAjax.addParam("pageIndex",$("#pageIndex").val());
         comAjax.addParam("pageRow", 10);
         comAjax.ajax();
 	}
 
+    //서버 처리 후 콜백함수
     function fn_selectBoardListCallback(data){
         var total = data.total;
         console.log("total>>"+total);
@@ -72,6 +125,7 @@
             var str = "";
             $.each(data.list, function(key, value){
                 str+="<tr>";
+                str+="<td><input type='checkbox' id='checkBd"+value.idx+"' name='checkBd' value='"+value.idx+"'></td>";
                 str+="<td>" + value.idx + "</td>";
                 str+="<td>" + value.writer + "</td>";
                 str+="<td><a href='/boards/view/" + value.idx + "'>" + value.title + "</td>";
@@ -85,9 +139,11 @@
     </script>
     <div class="container">
         <div>
+            <form id="commonForm" name="commonForm"></form>
             <table id="table" class="table">
                 <thead>
                 <tr>
+                    <th><input type="checkbox" id="checkAll" name="checkAll"></th>
                     <th>번호</th>
                     <th>작성자</th>
                     <th>제목</th>
@@ -115,6 +171,7 @@
             </form>
             <button onclick="location.href='/boards/write'" class="btn btn-primary">글쓰기</button>
             <button onclick="location.href='/boards/editWrite'" class="btn btn-primary">글쓰기(에디터)</button>
+            <button id="btnDelete" class="btn btn-primary">선택삭제</button>
         </div>
     </div>
 </th:block>

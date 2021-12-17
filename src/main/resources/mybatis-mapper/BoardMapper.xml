@@ -56,6 +56,11 @@
         <include refid="listWhere"></include>
     </select>
 
+    <delete id="deleteOne" parameterType="Long">
+        delete from boards
+        where idx = #{idx}
+    </delete>
+
     <insert id="saveAttach" parameterType="Attach" useGeneratedKeys="true" keyProperty="idx" keyColumn="idx">
         insert into attach (board_idx,original_file_name,stored_file_name,file_size,reg_date)
         values (#{boardIdx},#{originalFileName},#{storedFileName},#{fileSize},CURRENT_DATE())
@@ -71,5 +76,4 @@
         select * from attach
         where idx = #{idx}
     </select>
-
 </mapper>

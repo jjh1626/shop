@@ -1,3 +1,4 @@
+//NULL 체크
 function gfn_isNull(str) {
 	if (str == null) return true;
 	if (str == "NaN") return true;
@@ -9,6 +10,7 @@ function gfn_isNull(str) {
     return false;
 }
 
+//공통 일반 Submit
 function ComSubmit(opt_formId) {
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.url = "";
@@ -34,6 +36,7 @@ function ComSubmit(opt_formId) {
 	};
 }
 
+//공통 Ajax 전송
 var gfv_ajaxCallback = "";
 function ComAjax(opt_formId){
 	this.url = "";
@@ -79,6 +82,7 @@ function ComAjax(opt_formId){
 }
 
 /*
+** 페이징 처리 **
 divId : 페이징 태그가 그려질 div
 pageIndx : 현재 페이지 위치가 저장될 input 태그 id
 recordCount : 페이지당 레코드 수
@@ -146,6 +150,7 @@ function gfn_renderPaging(params){
 	$("#"+divId).append(preStr + str + postStr);
 }
 
+//페이징 함수에서 사용하는 페이지 이동 함수
 function _movePage(value){
 	$("#"+gfv_pageIndex).val(value);
 	if(typeof(gfv_eventName) == "function"){
@@ -186,5 +191,20 @@ function playWavFileInIE(src){
 		}
 		var audio = new Audio(src);
 		audio.play();
+	}
+}
+
+//form 에 input 추가
+function fn_addElement(fNm, nm, value){
+	var theForm = document.forms[fNm];
+	if ( theForm.elements[name] == null){
+		var input   = document.createElement('input');
+		input.type   = 'hidden';
+		input.name  = nm;
+		input.id  = nm;
+		input.value  = value;
+		theForm.appendChild(input);
+	}else{
+		$("#" + nm).val(value);
 	}
 }

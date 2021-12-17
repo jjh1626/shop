@@ -78,6 +78,11 @@ public class BoardService {
         return boardMapper.getTotal(boardSearch);
     }
 
+    @Transactional
+    public void boardDeleteOne(Long boardIdx) {
+        boardMapper.deleteOne(boardIdx);
+    }
+
     public List<Attach> findFileList(Long boardIdx) {
         List<Attach> fileList = boardMapper.findFileList(boardIdx);
         return fileList;

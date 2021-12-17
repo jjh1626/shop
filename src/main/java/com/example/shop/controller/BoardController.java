@@ -37,7 +37,7 @@ public class BoardController {
 
     @GetMapping(value = "/getBoardList")
     @ResponseBody
-    public List<Board> getBoardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
+    public List<Board> getBoardList(@ModelAttribute("boardSearch") BoardSearch boardSearch) {
         log.info(">>>"+boardSearch.getType());
         log.info(">>>"+boardSearch.getKeyword());
         List<Board> result = boardService.findAll(boardSearch);
@@ -46,7 +46,7 @@ public class BoardController {
 
     @PostMapping(value = "/getPagingBoardList")
     @ResponseBody
-    public Map<String, Object> getPagingBoardList(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
+    public Map<String, Object> getPagingBoardList(@ModelAttribute("boardSearch") BoardSearch boardSearch) {
         boardSearch.setTotal(boardService.getTotal(boardSearch));
         boardSearch.getPaging();
         List<Board> list = boardService.findAll(boardSearch);
@@ -154,5 +154,23 @@ public class BoardController {
         model.addAttribute("board", board);
         model.addAttribute("fileList", fileList);
         return "board/boardWrite";
+    }
+
+    @PostMapping(value = "/boardDeletePro")
+    @ResponseBody
+    public Map<String,Object> boardDeletePro(@RequestParam Map<String,Object> commandMap){
+        String arrCheck = commandMap.get("arrCheck").toString();
+        String[] strArr = arrCheck.split(",");
+        String result = "success";
+        try{
+            for (String str : strArr) {
+                boardService.boardDeleteOne(Long.parseLong(str));
+            }
+        } catch (Exception e){
+            result = "fail";
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", result);
+        return map;
     }
 }
