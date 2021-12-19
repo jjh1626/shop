@@ -3,8 +3,8 @@ INSERT INTO Products (prod_name, prod_price) values ('여름 토퍼', 35180);
 INSERT INTO Products (prod_name, prod_price) values ('페이크 삭스', 860);
 INSERT INTO Products (prod_name, prod_price) values ('우산', 2900);
 
-insert into member (name, city, street, zipcode) values ('길동이', '서울', '강남', '123456');
-insert into member (name, city, street, zipcode) values ('홍길동', '인청', '부평', '452456');
+insert into member (name, city, street, zipcode, gender, hobby) values ('길동이', '서울', '강남', '123456', 'M', '골프,요리');
+insert into member (name, city, street, zipcode, gender, hobby) values ('홍길순', '인천', '부평', '452456', 'W', '운동,여행,게임');
 
 insert into item (name, price, stock_quantity, dtype, artist, etc, author, isbn, actor, director)
 values ('JPA',15000,10,'B',null,null,'유재석','123456',null,null);
@@ -26,3 +26,17 @@ insert into boards (writer,title,content,reg_date) values ('길동이', '게시�
 insert into boards (writer,title,content,reg_date) values ('호동이', '게시판 제목11 입니다.', '내용11 입니다.', current_date());
 insert into boards (writer,title,content,reg_date) values ('길동이', '게시판 제목12 입니다.', '내용12 입니다.', current_date());
 insert into boards (writer,title,content,reg_date) values ('호동이', '게시판 제목13 입니다.', '내용13 입니다.', current_date());
+
+insert into code (code_group, code, code_name) values ('city', '서울', '서울');
+insert into code (code_group, code, code_name) values ('city', '인천', '인천');
+insert into code (code_group, code, code_name) values ('city', '경기도', '경기도');
+insert into code (code_group, code, code_name) values ('city', '대구', '대구');
+insert into code (code_group, code, code_name) values ('city', '부산', '부산');
+insert into code (code_group, code, code_name) values ('gender', 'M', '남자');
+insert into code (code_group, code, code_name) values ('gender', 'W', '여자');
+insert into code (code_group, code, code_name) values ('hobby', '낚시', '낚시');
+insert into code (code_group, code, code_name) values ('hobby', '운동', '운동');
+insert into code (code_group, code, code_name) values ('hobby', '골프', '골프');
+insert into code (code_group, code, code_name) values ('hobby', '여행', '여행');
+insert into code (code_group, code, code_name) values ('hobby', '요리', '요리');
+insert into code (code_group, code, code_name) values ('hobby', '게임', '게임');

@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shop.repository.MemberMapper">
     <insert id="save" parameterType="Member" useGeneratedKeys="true" keyProperty="memberId" keyColumn="member_id">
-        insert into member (name, city, street, zipcode)
-        values (#{name}, #{city}, #{street}, #{zipcode})
+        insert into member (name, city, street, zipcode, gender, hobby)
+        values (#{name}, #{city}, #{street}, #{zipcode}, #{gender}, #{hobby})
     </insert>
 
     <select id="findOne" resultType="Member">

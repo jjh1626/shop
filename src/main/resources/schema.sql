@@ -59,6 +59,8 @@ create table member (
 	city varchar(255),
 	street varchar(255),
 	zipcode varchar(255),
+	gender char(1),
+	hobby varchar(255),
 	primary key (member_id)
 );
 
@@ -97,5 +99,13 @@ create table attach (
     stored_file_name varchar(255),
     file_size bigint,
     reg_date date,
+    primary key (idx)
+);
+
+create table code (
+    idx bigint auto_increment not null,
+    code_group varchar(255),
+    code varchar(255),
+    code_name varchar(255),
     primary key (idx)
 );

@@ -66,7 +66,7 @@ public class CommonController {
         CommonUtils.printList(bodyList);
 
         //엑셀 Header 값
-        String[] arr = {"No","이름", "도시", "주소", "우편번호"};
+        String[] arr = {"No","이름", "도시", "주소", "우편번호", "성별", "취미"};
         List<String> headerList = Arrays.asList(arr);   //배열(array) to List
 
         //엑셀 생성
@@ -107,7 +107,7 @@ public class CommonController {
         }
 
         //엑셀 헤더 정보
-        String[] headerInfo = {"name","city","street","zipcode"};
+        String[] headerInfo = {"name","city","street","zipcode","gender","hobby"};
 
         ExcelUtils excelUtils = new ExcelUtils();
         List<Map<String, Object>> list = excelUtils.readDataExcel(file, headerInfo);
@@ -120,7 +120,9 @@ public class CommonController {
                     String.valueOf(map.get("name"))
                     , String.valueOf(map.get("city"))
                     , String.valueOf(map.get("street"))
-                    , String.valueOf(map.get("zipcode")));
+                    , String.valueOf(map.get("zipcode"))
+                    , String.valueOf(map.get("gender"))
+                    , String.valueOf(map.get("hobby")));
             memberService.join(member);
         }
 
