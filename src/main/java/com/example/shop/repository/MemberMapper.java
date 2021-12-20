@@ -11,4 +11,5 @@ public interface MemberMapper {
     Member findOne(Long memberId);
     List<Member> findAll();
     List<Member> findByName(String name);
+    void modify(Member member);
 }

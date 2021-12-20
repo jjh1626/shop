@@ -7,6 +7,23 @@
  }
 </style>
 <script>
+$(document).ready(function(){
+    var hobbies = $("#hidHobby").val();
+    console.log(hobbies);
+    var arr = hobbies.split(',');
+    console.log(arr);
+    if(arr.length > 0){
+        for(var value of arr){
+            console.log(value);
+            $("input[name='hobby']").each(function(){
+                if($(this).val() == value){
+                    $(this).prop("checked", true);
+                }
+            });
+        }
+    }
+});
+
 function fn_checkForm(){
     var frm = document.frm;
     if($("#name").val() == ""){
@@ -30,6 +47,8 @@ function fn_checkForm(){
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <form name="frm" role="form" onsubmit="return fn_checkForm()" action="/members/new" th:object="${memberForm}" method="post">
+        <input type="hidden" id="memberId" name="memberId" th:value="*{memberId}">
+        <input type="hidden" id="hidHobby" name="hidHobby" th:value="*{hobby}">
         <div class="form-group">
             <label th:for="name">이름</label>
             <input type="text" th:field="*{name}" class="form-control"
@@ -53,16 +72,21 @@ function fn_checkForm(){
             <label th:for="zipcode">우편번호</label>
             <input type="text" th:field="*{zipcode}" class="form-control" placeholder="우편번호를 입력하세요">
         </div>
-        <div>
+        <div class="form-group">
             <span>성별 : </span>
-            <input type="radio" name="gender" id="genderM" value="M"><label for="genderM">남자</label>
-            <input type="radio" name="gender" id="genderW" value="W"><label for="genderW">여자</label>
+            <!--<input type="radio" name="gender" id="genderM" value="M"><label for="genderM">남자</label>-->
+            <!--<input type="radio" name="gender" id="genderW" value="W"><label for="genderW">여자</label>-->
+            <span th:each="genderCode : ${genderCodes}">
+                <input type="radio" th:field="*{gender}" th:value="${genderCode.code}">
+                <label th:for="${#ids.prev('gender')}" th:text="${genderCode.codeName}">성별</label>
+            </span>
+
         </div>
-        <div>
+        <div class="form-group">
             <span>취미 : </span>
             <span th:each="hobbyCode : ${hobbyCodes}">
                 <input type="checkbox" th:field="*{hobby}" th:value="${hobbyCode.code}">
-                <label th:for="${#ids.prev('hobby')}" th:text="${hobbyCode.codeName}">낚시</label>
+                <label th:for="${#ids.prev('hobby')}" th:text="${hobbyCode.codeName}">취미</label>
             </span>
         </div>
         <br>

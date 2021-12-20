@@ -14,6 +14,7 @@
                 <th>우편번호</th>
                 <th>성별</th>
                 <th>취미</th>
+                <th>수정</th>
             </tr>
             </thead>
             <tbody>
@@ -25,6 +26,9 @@
                 <td th:text="${member.zipcode}"></td>
                 <td th:text="${member.gender}"></td>
                 <td th:text="${member.hobby}"></td>
+                <td>
+                    <a href="#" th:href="@{/members/{id}/edit (id=${member.memberId})}" class="btn btn-info">수정</a>
+                </td>
             </tr>
             </tbody>
         </table>

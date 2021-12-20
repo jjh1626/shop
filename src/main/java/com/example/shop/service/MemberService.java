@@ -44,4 +44,9 @@ public class MemberService {
     public List<Member> findByName(String name) {
         return memberMapper.findByName(name);
     }
+
+    //회원 수정
+    public void modifyMember(Member member) {
+        memberMapper.modify(member);
+    }
 }

@@ -20,4 +20,14 @@
         select * from member
         where name = #{name}
     </select>
+
+    <update id="modify" parameterType="Member">
+        update member
+        set city = #{city}
+        , street = #{street}
+        , zipcode = #{zipcode}
+        , gender = #{gender}
+        , hobby = #{hobby}
+        where member_id = #{memberId}
+    </update>
 </mapper>
